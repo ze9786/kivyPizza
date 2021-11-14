@@ -1,0 +1,211 @@
+<PizzaItem@RecycleKVIDsDataViewBehavior+BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    value: ''
+    price:''
+    pos:self.pos
+    size:self.size
+    orientation:'vertical'
+    Label:
+        text: root.value
+    Label:
+        text: root.price
+
+<PizzaBoxLayout>:
+    canvas:
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    orientation: 'vertical'
+    rv:rv
+
+
+    RecycleView:
+        id: rv
+        data: [{'value': str(root.data_items[x]), 'price': str(root.data_items[x + 1])} for x in range(len(root.data_items)-1) if x % 2 == 0]
+        scroll_type: ['bars', 'content']
+        scroll_wheel_distance: dp(114)
+        bar_width: dp(10)
+        viewclass: 'PizzaItem'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            spacing: dp(2)
+
+<MenuScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+        canvas:
+            Color:
+                rgba: 0,0,0,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            color: 1,1,1,1
+            text:"Welcome to Pizza Hut"
+        Button:
+            text: "Pizza"
+            on_press:root.gotoPizza()
+            size_hint_y: .2
+
+        Button:
+            text: "Main Course"
+            on_press:root.gotoPizza()
+            size_hint_y: .2
+
+        Button:
+            text: "Drink & Dessert"
+            on_press:root.gotoPizza()
+            size_hint_y: .2
+
+        Button:
+            text: "Appetizer"
+            on_press:root.gotoPizza()
+            size_hint_y: .2
+
+<PizzaScreen>:
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols: 3
+            rows: 2
+            size_hint_y: None
+            height: dp(108)
+            padding: dp(8)
+            spacing: dp(16)
+            Button:
+                text: 'Back'
+                on_press: root.goBack()
+            Button:
+                text: 'Preview'
+                on_press:root.goPreview()
+        PizzaBoxLayout:
+
+<PreviewItem@RecycleKVIDsDataViewBehavior+BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    food: ''
+    qty:''
+    price:''
+    pos:self.pos
+    size:self.size
+    orientation:'horizontal'
+    Label:
+        text: root.food
+    Label:
+        text: root.qty
+    Label:
+        text: root.price
+
+<PreviewBoxLayout>:
+    canvas:
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    orientation: 'vertical'
+    rv:rv
+    BoxLayout:
+        size_hint_y:0.1
+        orientation:'horizontal'
+        Label:
+            text:"Food"
+        Label:
+            text:"Quantity"
+        Label:
+            text:"Price"
+    RecycleView:
+        id: rv
+        data: [{'food': str(root.data_items[x]), 'qty': str(root.data_items[x + 1]),'price': str(root.data_items[x + 2])} for x in range(len(root.data_items)-1) if x % 3 == 0]
+        scroll_type: ['bars', 'content']
+        scroll_wheel_distance: dp(114)
+        bar_width: dp(10)
+        viewclass: 'PreviewItem'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            spacing: dp(2)
+    BoxLayout:
+        halign:"right"
+        size_hint_y:0.2
+        orientation:'horizontal'
+        amount:''
+        Label:
+            size_hint_x:2
+
+        Label:
+            halign:"right"
+            text:'Total Amount:'
+        Label:
+            halign:"right"
+            text:root.amount
+
+<PreviewScreen>:
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            size_hint_y:0.1
+            orientation:'horizontal'
+            restaurantId:''
+            Label:
+                text:"Restaurant ID:"
+            Label:
+                text: ''
+        BoxLayout:
+            size_hint_y:0.1
+            orientation:'horizontal'
+            name:''
+            Label:
+                text:"Restaurant name:"
+            Label:
+                text: ''
+        PreviewBoxLayout:
+        Button:
+            width:dp(50)
+            halign:'right'
+            size_hint_y:0.15
+            text:"Confirm Order"
+            on_press:root.confirmBtnOnPressed()
+
+
+<Manager>:
+    id: screen_manager
+
+    screen_one: screen_one
+    screen_two: screen_two
+    screen_preview: screen_preview
+
+    MenuScreen:
+        id: screen_one
+        name: "menu"
+        manager: screen_manager
+
+    PizzaScreen:
+        id: screen_two
+        name: "pizza"
+        manager: screen_manager
+
+    PreviewScreen:
+        id: screen_preview
+        name: "preview"
+        manager: screen_manager
